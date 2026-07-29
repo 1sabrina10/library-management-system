@@ -1,0 +1,828 @@
+openapi: 3.0.3
+
+info:
+  title: Library Management API
+  description: REST API for managing a library.
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:8080
+    description: Local server
+
+tags:
+  - name: Authentication
+    description: Authentication management
+
+  - name: Admin
+    description: Administration management
+
+  - name: Books
+    description: Book management
+
+  - name: Authors
+    description: Author management
+
+  - name: Categories
+    description: Category management
+
+  - name: Loans
+    description: Loan management
+
+security:
+  - bearerAuth: []
+
+paths:
+  /api/auth/register:
+    post:
+      security: []
+      tags:
+        - Authentication
+      summary: Register a new user
+      description: Creates a new user account.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterRequest'
+      responses:
+        '201':
+          description: User successfully registered
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationResponse'
+
+        '400':
+          description: Invalid request
+
+        '409':
+          description: Email already exists
+
+  /api/auth/login:
+    post:
+      security: [ ]
+      tags:
+        - Authentication
+      summary: Authenticate a user
+      description: Authenticates a user and returns a JWT token.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: Authentication successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationResponse'
+
+        '400':
+          description: Invalid request
+
+        '401':
+          description: Invalid email or password
+
+  /api/admin/users/{id}/make-admin:
+    put:
+      security:
+        - bearerAuth: [ ]
+      tags:
+        - Admin
+      summary: Promote user to admin
+      description: Change the role of a user to ADMIN.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: User id
+          schema:
+            type: integer
+            format: int64
+
+      responses:
+        '200':
+          description: User promoted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+
+        '404':
+          description: User not found
+
+        '403':
+          description: Access denied
+
+  /api/books:
+    post:
+      tags:
+        - Books
+      summary: Create a book
+      security:
+        - bearerAuth: [ ]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BookRequest'
+
+      responses:
+        '201':
+          description: Book created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookResponse'
+
+
+    get:
+      tags:
+        - Books
+      summary: Get all books
+      security:
+        - bearerAuth: [ ]
+
+      responses:
+        '200':
+          description: List of books
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BookResponse'
+
+
+  /api/books/{id}:
+    get:
+      tags:
+        - Books
+      summary: Get book by id
+      security:
+        - bearerAuth: [ ]
+
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+
+      responses:
+        '200':
+          description: Book found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookResponse'
+
+
+    put:
+      tags:
+        - Books
+      summary: Update book
+      security:
+        - bearerAuth: [ ]
+
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BookRequest'
+
+      responses:
+        '200':
+          description: Book updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookResponse'
+
+
+    delete:
+      tags:
+        - Books
+      summary: Delete book
+      security:
+        - bearerAuth: [ ]
+
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+
+      responses:
+        '204':
+          description: Book deleted
+
+  /api/authors:
+    get:
+      security:
+        - bearerAuth: [ ]
+
+      tags:
+        - Authors
+      summary: Get all authors
+      responses:
+        '200':
+          description: List of authors
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AuthorResponse'
+
+    post:
+      security:
+        - bearerAuth: [ ]
+
+      tags:
+        - Authors
+      summary: Create a new author
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthorRequest'
+      responses:
+        '201':
+          description: Author created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorResponse'
+
+
+  /api/authors/{id}:
+    get:
+      security:
+        - bearerAuth: [ ]
+
+      tags:
+        - Authors
+      summary: Get author by id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Author found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorResponse'
+        '404':
+          description: Author not found
+
+    put:
+      security:
+        - bearerAuth: [ ]
+
+      tags:
+        - Authors
+      summary: Update an author
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthorRequest'
+      responses:
+        '200':
+          description: Author updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorResponse'
+        '404':
+          description: Author not found
+
+    delete:
+      security:
+        - bearerAuth: [ ]
+
+      tags:
+        - Authors
+      summary: Delete an author
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '204':
+          description: Author deleted
+        '404':
+          description: Author not found
+
+  /api/categories:
+    get:
+      tags:
+        - Categories
+      summary: Get all categories
+      security:
+        - bearerAuth: [ ]
+      responses:
+        '200':
+          description: List of categories
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CategoryResponse'
+
+    post:
+      tags:
+        - Categories
+      summary: Create a category
+      security:
+        - bearerAuth: [ ]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CategoryRequest'
+      responses:
+        '201':
+          description: Category created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CategoryResponse'
+
+  /api/categories/{id}:
+    get:
+      tags:
+        - Categories
+      summary: Get category by id
+      security:
+        - bearerAuth: [ ]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Category found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CategoryResponse'
+
+    put:
+      tags:
+        - Categories
+      summary: Update category
+      security:
+        - bearerAuth: [ ]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CategoryRequest'
+      responses:
+        '200':
+          description: Category updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CategoryResponse'
+
+    delete:
+      tags:
+        - Categories
+      summary: Delete category
+      security:
+        - bearerAuth: [ ]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '204':
+          description: Category deleted
+
+  /api/loans:
+    get:
+      tags:
+        - Loans
+      summary: Get all loans
+      security:
+        - bearerAuth: [ ]
+      responses:
+        '200':
+          description: List of loans
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LoanResponse'
+
+    post:
+      tags:
+        - Loans
+      summary: Borrow a book
+      security:
+        - bearerAuth: [ ]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoanRequest'
+      responses:
+        '201':
+          description: Loan created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoanResponse'
+
+  /api/loans/{id}:
+    get:
+      tags:
+        - Loans
+      summary: Get loan by id
+      security:
+        - bearerAuth: [ ]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Loan found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoanResponse'
+
+        '404':
+          description: Loan not found
+
+    delete:
+      tags:
+        - Loans
+      summary: Delete a loan
+      security:
+        - bearerAuth: [ ]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '204':
+          description: Loan deleted
+
+  /api/loans/{id}/return:
+    put:
+      tags:
+        - Loans
+      summary: Return a book
+      security:
+        - bearerAuth: [ ]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Book returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoanResponse'
+
+        '404':
+          description: Loan not found
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    RegisterRequest:
+      type: object
+      required:
+        - firstname
+        - lastname
+        - email
+        - password
+
+      properties:
+        firstname:
+          type: string
+          minLength: 2
+          maxLength: 50
+          example: Sabrina
+
+        lastname:
+          type: string
+          minLength: 2
+          maxLength: 50
+          example: Moufok
+
+        email:
+          type: string
+          format: email
+          maxLength: 100
+          example: sabrina@gmail.com
+
+        password:
+          type: string
+          minLength: 8
+          maxLength: 100
+          format: password
+          example: password123
+
+    AuthenticationResponse:
+      type: object
+      properties:
+        token:
+          type: string
+          description: JWT access token
+          example: eyJhbGciOiJIUzI1NiJ9...
+
+    LoginRequest:
+      type: object
+      required:
+        - email
+        - password
+
+      properties:
+        email:
+          type: string
+          format: email
+          maxLength: 100
+          example: sabrina@gmail.com
+
+        password:
+          type: string
+          minLength: 8
+          maxLength: 100
+          format: password
+          example: password123
+
+    UserResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+
+        firstname:
+          type: string
+          example: Sabrina
+
+        lastname:
+          type: string
+          example: Moufok
+
+        email:
+          type: string
+          example: sabrina@gmail.com
+
+        role:
+          type: string
+          example: ADMIN
+
+    BookRequest:
+      type: object
+      required:
+        - title
+        - isbn
+        - publicationYear
+        - authorId
+        - categoryId
+
+      properties:
+        title:
+          type: string
+          minLength: 1
+          maxLength: 255
+          example: Clean Code
+
+        isbn:
+          type: string
+          minLength: 10
+          maxLength: 20
+          example: 9780132350884
+
+        publicationYear:
+          type: integer
+          minimum: 1900
+          example: 2008
+
+        authorId:
+          type: integer
+          format: int64
+          minimum: 1
+          example: 1
+
+        categoryId:
+          type: integer
+          format: int64
+          minimum: 1
+          example: 2
+
+    BookResponse:
+      type: object
+
+      properties:
+        id:
+          type: integer
+          format: int64
+
+        title:
+          type: string
+
+        isbn:
+          type: string
+
+        publicationYear:
+          type: integer
+
+        available:
+          type: boolean
+
+        authorName:
+          type: string
+
+        categoryName:
+          type: string
+
+    AuthorRequest:
+      type: object
+      required:
+        - firstname
+        - lastname
+
+      properties:
+        firstname:
+          type: string
+          minLength: 2
+          maxLength: 50
+          example: Robert
+
+        lastname:
+          type: string
+          minLength: 2
+          maxLength: 50
+          example: Martin
+
+        biography:
+          type: string
+          maxLength: 1000
+          example: Software engineer and author of Clean Code
+
+    AuthorResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+
+        firstname:
+          type: string
+          example: Robert
+
+        lastname:
+          type: string
+          example: Martin
+
+        biography:
+          type: string
+          example: Software engineer and author of Clean Code
+
+    CategoryRequest:
+      type: object
+      required:
+        - name
+
+      properties:
+        name:
+          type: string
+          minLength: 2
+          maxLength: 100
+          example: Programming
+
+    CategoryResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+
+        name:
+          type: string
+          example: Programming
+
+    LoanRequest:
+      type: object
+      required:
+        - userId
+        - bookId
+
+      properties:
+        userId:
+          type: integer
+          format: int64
+          minimum: 1
+          example: 1
+
+        bookId:
+          type: integer
+          format: int64
+          minimum: 1
+          example: 2
+
+    LoanResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+
+        userName:
+          type: string
+          example: Sabrina Moufok
+
+        bookTitle:
+          type: string
+          example: Clean Code
+
+        BorrowDate:
+          type: string
+          format: date
+          example: "2026-07-27"
+
+        returnDate:
+          type: string
+          format: date
+          example: "2026-08-10"
+
+        loanStatus:
+          type: string
+          example: BORROWED

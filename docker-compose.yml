@@ -1,0 +1,42 @@
+services:
+
+  mysql:
+    image: mysql:8.0
+
+    container_name: library-mysql
+
+    environment:
+      MYSQL_DATABASE: library
+      MYSQL_ROOT_PASSWORD: your_new_password
+
+    ports:
+      - "3307:3306"
+
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+
+  app:
+    build: .
+
+    container_name: library-app
+
+    ports:
+      - "8080:8080"
+
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/library
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: your_new_password
+
+      JWT_SECRET_KEY: k8aLxsxAeC/r5gmbdriGLbjZ3+vpHbkzdTbNWpQlIsc=
+      JWT_EXPIRATION: 86400000
+
+    depends_on:
+      - mysql
+
+
+volumes:
+  mysql-data:

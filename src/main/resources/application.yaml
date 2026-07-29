@@ -1,0 +1,13 @@
+spring:
+  profiles:
+    active: dev
+
+jwt:
+  secret-key: "k8aLxsxAeC/r5gmbdriGLbjZ3+vpHbkzdTbNWpQlIsc="
+  expiration: 86400000
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html

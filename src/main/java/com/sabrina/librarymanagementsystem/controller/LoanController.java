@@ -1,0 +1,47 @@
+package com.sabrina.librarymanagementsystem.controller;
+
+import com.sabrina.librarymanagementsystem.controller.api.LoansApi;
+
+import com.sabrina.librarymanagementsystem.dto.LoanRequest;
+import com.sabrina.librarymanagementsystem.dto.LoanResponse;
+import com.sabrina.librarymanagementsystem.service.LoanService;
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RestController;
+import java.util.List;
+
+@RestController
+public class LoanController implements LoansApi {
+    private final LoanService loanService;
+    public LoanController(LoanService loanService) {
+        this.loanService = loanService;
+    }
+
+    @Override
+    public ResponseEntity<List<LoanResponse>> apiLoansGet() {
+        return ResponseEntity.ok(loanService.findAll());
+    }
+
+    @Override
+    public ResponseEntity<Void> apiLoansIdDelete(Long id) {
+        loanService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @Override
+    public ResponseEntity<LoanResponse> apiLoansIdGet(Long id) {
+        return ResponseEntity.ok(loanService.findById(id));
+    }
+
+    @Override
+    public ResponseEntity<LoanResponse> apiLoansIdReturnPut(Long id) {
+        return ResponseEntity.ok(loanService.returnBook(id));
+    }
+
+    @Override
+    public ResponseEntity<LoanResponse> apiLoansPost(@Valid LoanRequest loanRequest) {
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(loanService.createLoan(loanRequest));
+    }
+}

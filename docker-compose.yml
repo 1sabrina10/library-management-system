@@ -6,8 +6,8 @@ services:
     container_name: library-mysql
 
     environment:
-      MYSQL_DATABASE: library
-      MYSQL_ROOT_PASSWORD: your_new_password
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
 
     ports:
       - "3307:3306"
@@ -68,8 +68,7 @@ services:
       retries: 10
 
   app:
-    build: .
-
+    image: 1sabrina10/library-management-system:latest
     container_name: library-app
 
     ports:
@@ -78,15 +77,12 @@ services:
     environment:
       SPRING_PROFILES_ACTIVE: prod
 
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/library
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/${MYSQL_DATABASE}
       SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: your_new_password
+      SPRING_DATASOURCE_PASSWORD: ${MYSQL_ROOT_PASSWORD}
 
-      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
-      SPRING_KAFKA_PROPERTIES_SCHEMA_REGISTRY_URL: http://schema-registry:8081
-
-      JWT_SECRET_KEY: k8aLxsxAeC/r5gmbdriGLbjZ3+vpHbkzdTbNWpQlIsc=
-      JWT_EXPIRATION: 86400000
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY}
+      JWT_EXPIRATION: ${JWT_EXPIRATION}
 
     depends_on:
       mysql:

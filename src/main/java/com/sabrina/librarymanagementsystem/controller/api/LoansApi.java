@@ -5,8 +5,7 @@
  */
 package com.sabrina.librarymanagementsystem.controller.api;
 
-import com.sabrina.librarymanagementsystem.dto.LoanRequest;
-import com.sabrina.librarymanagementsystem.dto.LoanResponse;
+import com.sabrina.librarymanagementsystem.controller.dto.LoanResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -27,164 +26,163 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.List;
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2026-07-28T17:37:18.816725724+02:00[Europe/Andorra]", comments = "Generator version: 7.15.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2026-07-31T01:10:38.653471488+02:00[Europe/Andorra]", comments = "Generator version: 7.15.0")
 @Validated
 @Tag(name = "Loans", description = "Loan management")
 public interface LoansApi {
 
     public static final String PATH_API_LOANS_GET = "/api/loans";
+
     /**
      * GET /api/loans : Get all loans
      *
      * @return List of loans (status code 200)
      */
     @Operation(
-        operationId = "apiLoansGet",
-        summary = "Get all loans",
-        tags = { "Loans" },
-        responses = {
-            @ApiResponse(responseCode = "200", description = "List of loans", content = {
-                @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = LoanResponse.class)))
-            })
-        },
-        security = {
-            @SecurityRequirement(name = "bearerAuth")
-        }
+            operationId = "apiLoansGet",
+            summary = "Get all loans",
+            tags = {"Loans"},
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "List of loans", content = {
+                            @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = LoanResponse.class)))
+                    })
+            },
+            security = {
+                    @SecurityRequirement(name = "bearerAuth")
+            }
     )
     @RequestMapping(
-        method = RequestMethod.GET,
-        value = LoansApi.PATH_API_LOANS_GET,
-        produces = { "application/json" }
+            method = RequestMethod.GET,
+            value = LoansApi.PATH_API_LOANS_GET,
+            produces = {"application/json"}
     )
-    
-    ResponseEntity<List<LoanResponse>> apiLoansGet(
-        
+    ResponseEntity<List<com.sabrina.librarymanagementsystem.controller.dto.LoanResponse>> apiLoansGet(
+
     );
 
 
     public static final String PATH_API_LOANS_ID_DELETE = "/api/loans/{id}";
+
     /**
      * DELETE /api/loans/{id} : Delete a loan
      *
-     * @param id  (required)
+     * @param id (required)
      * @return Loan deleted (status code 204)
      */
     @Operation(
-        operationId = "apiLoansIdDelete",
-        summary = "Delete a loan",
-        tags = { "Loans" },
-        responses = {
-            @ApiResponse(responseCode = "204", description = "Loan deleted")
-        },
-        security = {
-            @SecurityRequirement(name = "bearerAuth")
-        }
+            operationId = "apiLoansIdDelete",
+            summary = "Delete a loan",
+            tags = {"Loans"},
+            responses = {
+                    @ApiResponse(responseCode = "204", description = "Loan deleted")
+            },
+            security = {
+                    @SecurityRequirement(name = "bearerAuth")
+            }
     )
     @RequestMapping(
-        method = RequestMethod.DELETE,
-        value = LoansApi.PATH_API_LOANS_ID_DELETE
+            method = RequestMethod.DELETE,
+            value = LoansApi.PATH_API_LOANS_ID_DELETE
     )
-    
     ResponseEntity<Void> apiLoansIdDelete(
-        @Parameter(name = "id", description = "", required = true, in = ParameterIn.PATH) @PathVariable("id") Long id
+            @Parameter(name = "id", description = "", required = true, in = ParameterIn.PATH) @PathVariable("id") Long id
     );
 
 
     public static final String PATH_API_LOANS_ID_GET = "/api/loans/{id}";
+
     /**
      * GET /api/loans/{id} : Get loan by id
      *
-     * @param id  (required)
+     * @param id (required)
      * @return Loan found (status code 200)
-     *         or Loan not found (status code 404)
+     * or Loan not found (status code 404)
      */
     @Operation(
-        operationId = "apiLoansIdGet",
-        summary = "Get loan by id",
-        tags = { "Loans" },
-        responses = {
-            @ApiResponse(responseCode = "200", description = "Loan found", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = LoanResponse.class))
-            }),
-            @ApiResponse(responseCode = "404", description = "Loan not found")
-        },
-        security = {
-            @SecurityRequirement(name = "bearerAuth")
-        }
+            operationId = "apiLoansIdGet",
+            summary = "Get loan by id",
+            tags = {"Loans"},
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Loan found", content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = LoanResponse.class))
+                    }),
+                    @ApiResponse(responseCode = "404", description = "Loan not found")
+            },
+            security = {
+                    @SecurityRequirement(name = "bearerAuth")
+            }
     )
     @RequestMapping(
-        method = RequestMethod.GET,
-        value = LoansApi.PATH_API_LOANS_ID_GET,
-        produces = { "application/json" }
+            method = RequestMethod.GET,
+            value = LoansApi.PATH_API_LOANS_ID_GET,
+            produces = {"application/json"}
     )
-    
-    ResponseEntity<LoanResponse> apiLoansIdGet(
-        @Parameter(name = "id", description = "", required = true, in = ParameterIn.PATH) @PathVariable("id") Long id
+    ResponseEntity<com.sabrina.librarymanagementsystem.controller.dto.LoanResponse> apiLoansIdGet(
+            @Parameter(name = "id", description = "", required = true, in = ParameterIn.PATH) @PathVariable("id") Long id
     );
 
 
     public static final String PATH_API_LOANS_ID_RETURN_PUT = "/api/loans/{id}/return";
+
     /**
      * PUT /api/loans/{id}/return : Return a book
      *
-     * @param id  (required)
+     * @param id (required)
      * @return Book returned (status code 200)
-     *         or Loan not found (status code 404)
+     * or Loan not found (status code 404)
      */
     @Operation(
-        operationId = "apiLoansIdReturnPut",
-        summary = "Return a book",
-        tags = { "Loans" },
-        responses = {
-            @ApiResponse(responseCode = "200", description = "Book returned", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = LoanResponse.class))
-            }),
-            @ApiResponse(responseCode = "404", description = "Loan not found")
-        },
-        security = {
-            @SecurityRequirement(name = "bearerAuth")
-        }
+            operationId = "apiLoansIdReturnPut",
+            summary = "Return a book",
+            tags = {"Loans"},
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Book returned", content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = LoanResponse.class))
+                    }),
+                    @ApiResponse(responseCode = "404", description = "Loan not found")
+            },
+            security = {
+                    @SecurityRequirement(name = "bearerAuth")
+            }
     )
     @RequestMapping(
-        method = RequestMethod.PUT,
-        value = LoansApi.PATH_API_LOANS_ID_RETURN_PUT,
-        produces = { "application/json" }
+            method = RequestMethod.PUT,
+            value = LoansApi.PATH_API_LOANS_ID_RETURN_PUT,
+            produces = {"application/json"}
     )
-    
-    ResponseEntity<LoanResponse> apiLoansIdReturnPut(
-        @Parameter(name = "id", description = "", required = true, in = ParameterIn.PATH) @PathVariable("id") Long id
+    ResponseEntity<com.sabrina.librarymanagementsystem.controller.dto.LoanResponse> apiLoansIdReturnPut(
+            @Parameter(name = "id", description = "", required = true, in = ParameterIn.PATH) @PathVariable("id") Long id
     );
 
 
     public static final String PATH_API_LOANS_POST = "/api/loans";
+
     /**
      * POST /api/loans : Borrow a book
      *
-     * @param loanRequest  (required)
+     * @param loanRequest (required)
      * @return Loan created (status code 201)
      */
     @Operation(
-        operationId = "apiLoansPost",
-        summary = "Borrow a book",
-        tags = { "Loans" },
-        responses = {
-            @ApiResponse(responseCode = "201", description = "Loan created", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = LoanResponse.class))
-            })
-        },
-        security = {
-            @SecurityRequirement(name = "bearerAuth")
-        }
+            operationId = "apiLoansPost",
+            summary = "Borrow a book",
+            tags = {"Loans"},
+            responses = {
+                    @ApiResponse(responseCode = "201", description = "Loan created", content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = LoanResponse.class))
+                    })
+            },
+            security = {
+                    @SecurityRequirement(name = "bearerAuth")
+            }
     )
     @RequestMapping(
-        method = RequestMethod.POST,
-        value = LoansApi.PATH_API_LOANS_POST,
-        produces = { "application/json" },
-        consumes = { "application/json" }
+            method = RequestMethod.POST,
+            value = LoansApi.PATH_API_LOANS_POST,
+            produces = {"application/json"},
+            consumes = {"application/json"}
     )
-    
-    ResponseEntity<LoanResponse> apiLoansPost(
-        @Parameter(name = "LoanRequest", description = "", required = true) @Valid @RequestBody LoanRequest loanRequest
+    ResponseEntity<com.sabrina.librarymanagementsystem.controller.dto.LoanResponse> apiLoansPost(
+            @Valid @RequestBody com.sabrina.librarymanagementsystem.controller.dto.LoanRequest loanRequest
     );
-
 }

@@ -1,0 +1,24 @@
+{
+  "type": "record",
+  "name": "LoanEvent",
+  "namespace": "com.sabrina.librarymanagementsystem.kafka",
+
+  "fields": [
+    {
+      "name": "loanId",
+      "type": "long"
+    },
+    {
+      "name": "userId",
+      "type": "long"
+    },
+    {
+      "name": "bookId",
+      "type": "long"
+    },
+    {
+      "name": "action",
+      "type": "string"
+    }
+  ]
+}

@@ -1,11 +1,8 @@
 package com.sabrina.librarymanagementsystem.controller;
 
 import com.sabrina.librarymanagementsystem.controller.api.LoansApi;
-
-import com.sabrina.librarymanagementsystem.dto.LoanRequest;
-import com.sabrina.librarymanagementsystem.dto.LoanResponse;
+import com.sabrina.librarymanagementsystem.controller.dto.LoanResponse;
 import com.sabrina.librarymanagementsystem.service.LoanService;
-import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -40,8 +37,10 @@ public class LoanController implements LoansApi {
     }
 
     @Override
-    public ResponseEntity<LoanResponse> apiLoansPost(@Valid LoanRequest loanRequest) {
+    public ResponseEntity<LoanResponse> apiLoansPost(com.sabrina.librarymanagementsystem.controller.dto.LoanRequest loanRequest) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(loanService.createLoan(loanRequest));
     }
+
+
 }

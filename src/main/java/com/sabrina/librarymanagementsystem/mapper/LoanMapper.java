@@ -1,6 +1,6 @@
 package com.sabrina.librarymanagementsystem.mapper;
 
-import com.sabrina.librarymanagementsystem.dto.LoanResponse;
+import com.sabrina.librarymanagementsystem.controller.dto.LoanResponse;
 import com.sabrina.librarymanagementsystem.entity.Loan;
 import org.springframework.stereotype.Component;
 

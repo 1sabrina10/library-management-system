@@ -1,12 +1,14 @@
 package com.sabrina.librarymanagementsystem.service;
 
-import com.sabrina.librarymanagementsystem.dto.LoanRequest;
-import com.sabrina.librarymanagementsystem.dto.LoanResponse;
+import com.sabrina.librarymanagementsystem.controller.dto.LoanRequest;
+import com.sabrina.librarymanagementsystem.controller.dto.LoanResponse;
 import com.sabrina.librarymanagementsystem.entity.Book;
 import com.sabrina.librarymanagementsystem.entity.Loan;
 import com.sabrina.librarymanagementsystem.entity.LoanStatus;
 import com.sabrina.librarymanagementsystem.entity.User;
 import com.sabrina.librarymanagementsystem.exception.ResourceNotFoundException;
+import com.sabrina.librarymanagementsystem.kafka.LoanEvent;
+import com.sabrina.librarymanagementsystem.kafka.producer.LoanProducer;
 import com.sabrina.librarymanagementsystem.mapper.LoanMapper;
 import com.sabrina.librarymanagementsystem.repository.BookRepository;
 import com.sabrina.librarymanagementsystem.repository.LoanRepository;
@@ -23,19 +25,26 @@ public class LoanService {
     private final LoanMapper loanMapper;
     private final UserRepository userRepository;
     private final BookRepository bookRepository;
-    public LoanService(LoanRepository loanRepository, LoanMapper loanMapper, UserRepository userRepository, BookRepository bookRepository) {
+    private final LoanProducer loanProducer;
+    public LoanService(LoanRepository loanRepository, LoanMapper loanMapper, UserRepository userRepository, BookRepository bookRepository, LoanProducer loanProducer) {
         this.loanRepository = loanRepository;
         this.loanMapper = loanMapper;
         this.userRepository = userRepository;
         this.bookRepository = bookRepository;
+        this.loanProducer = loanProducer;
     }
 
     public LoanResponse createLoan(@Valid LoanRequest request){
+
         User user = userRepository.findById(request.getUserId())
-                .orElseThrow(()-> new ResourceNotFoundException("User not found"));
+                .orElseThrow(() -> {
+                    return new ResourceNotFoundException("User not found");
+                });
 
         Book book = bookRepository.findById(request.getBookId())
-                .orElseThrow(()-> new ResourceNotFoundException("Book not found"));
+                .orElseThrow(() -> {
+                    return new ResourceNotFoundException("Book not found");
+                });
 
         if(!book.getAvailable()) {
             throw new RuntimeException("Book is not available");
@@ -52,6 +61,15 @@ public class LoanService {
         bookRepository.save(book);
 
         Loan savedLoan = loanRepository.save(loan);
+
+        LoanEvent event = LoanEvent.newBuilder()
+                .setLoanId(savedLoan.getId())
+                .setUserId(user.getId())
+                .setBookId(book.getId())
+                .setAction("BORROWED")
+                .build();
+
+        loanProducer.sendLoanEvent(event);
 
         return loanMapper.toResponse(savedLoan);
     }

@@ -21,12 +21,14 @@ Library Management System est une API REST développée avec **Spring Boot** per
 
 ## Fonctionnalités
 
-* Authentification sécurisée (Register / Login)
+* Authentification sécurisée (Register / Login) avec JWT
 * Gestion des utilisateurs
 * Gestion des livres
+* Gestion des auteurs
 * Gestion des catégories
+* Gestion des emprunts
 * Communication asynchrone avec Kafka
-* Sérialisation des événements avec Avro
+* Sérialisation des événements avec Apache Avro
 
 ## Profils Spring
 

@@ -1,7 +1,6 @@
 package com.sabrina.librarymanagementsystem.controller;
 
 import com.sabrina.librarymanagementsystem.controller.api.CategoriesApi;
-
 import com.sabrina.librarymanagementsystem.controller.dto.CategoryRequest;
 import com.sabrina.librarymanagementsystem.controller.dto.CategoryResponse;
 import com.sabrina.librarymanagementsystem.service.CategoryService;

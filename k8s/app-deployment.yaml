@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: library-app
+  namespace: library
+
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: library-app
+
+  template:
+    metadata:
+      labels:
+        app: library-app
+
+    spec:
+      containers:
+        - name: library-app
+          image: 1sabrina10/library-management-system:latest
+
+          imagePullPolicy: Always
+
+          ports:
+            - containerPort: 8080
+
+          env:
+
+            - name: SPRING_PROFILES_ACTIVE
+              value: "prod"
+
+            - name: SPRING_DATASOURCE_URL
+              value: "jdbc:mysql://mysql:3306/library"
+
+            - name: SPRING_DATASOURCE_USERNAME
+              value: "root"
+
+            - name: SPRING_DATASOURCE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: library-secret
+                  key: MYSQL_ROOT_PASSWORD
+
+
+            - name: JWT_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: library-secret
+                  key: JWT_SECRET_KEY
+
+
+            - name: JWT_EXPIRATION
+              valueFrom:
+                secretKeyRef:
+                  name: library-secret
+                  key: JWT_EXPIRATION
+
+
+            - name: KAFKA_BOOTSTRAP_SERVERS
+              value: "kafka-broker:9092"
+
+
+            - name: SCHEMA_REGISTRY_URL
+              value: "http://schema-registry:8081"

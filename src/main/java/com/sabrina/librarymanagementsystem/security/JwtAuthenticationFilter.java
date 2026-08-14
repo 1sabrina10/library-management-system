@@ -16,10 +16,8 @@ import java.io.IOException;
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-
     private final JwtService jwtService;
     private final CustomUserDetailsService userDetailsService;
-
 
     public JwtAuthenticationFilter(
             JwtService jwtService,
@@ -29,7 +27,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         this.userDetailsService = userDetailsService;
     }
 
-
     @Override
     protected void doFilterInternal(
             HttpServletRequest request,
@@ -38,9 +35,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
             throws ServletException, IOException {
 
-
         String authHeader = request.getHeader("Authorization");
-
 
         if(authHeader == null || !authHeader.startsWith("Bearer ")) {
 
@@ -48,23 +43,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
-
         String token = authHeader.substring(7);
 
-
         String email = jwtService.extractEmail(token);
-
 
         if(email != null
                 && SecurityContextHolder.getContext().getAuthentication() == null) {
 
-
-            UserDetails userDetails =
-                    userDetailsService.loadUserByUsername(email);
-
+            UserDetails userDetails = userDetailsService.loadUserByUsername(email);
 
             if(jwtService.validateToken(token)) {
-
 
                 UsernamePasswordAuthenticationToken authentication =
                         new UsernamePasswordAuthenticationToken(
@@ -73,13 +61,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                 userDetails.getAuthorities()
                         );
 
-
                 SecurityContextHolder
                         .getContext()
                         .setAuthentication(authentication);
             }
         }
-
 
         filterChain.doFilter(request, response);
     }

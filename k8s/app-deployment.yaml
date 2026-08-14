@@ -59,9 +59,3 @@ spec:
                   key: JWT_EXPIRATION
 
 
-            - name: KAFKA_BOOTSTRAP_SERVERS
-              value: "kafka-broker:9092"
-
-
-            - name: SCHEMA_REGISTRY_URL
-              value: "http://schema-registry:8081"

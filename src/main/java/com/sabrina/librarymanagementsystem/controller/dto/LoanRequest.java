@@ -12,10 +12,8 @@ import java.util.Objects;
  * LoanRequest
  */
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2026-07-28T17:25:11.834260484+02:00[Europe/Andorra]", comments = "Generator version: 7.15.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2026-08-08T22:13:59.993615634+02:00[Europe/Andorra]", comments = "Generator version: 7.15.0")
 public class LoanRequest {
-
-  private Long userId;
 
   private Long bookId;
 
@@ -26,30 +24,8 @@ public class LoanRequest {
   /**
    * Constructor with only required parameters
    */
-  public LoanRequest(Long userId, Long bookId) {
-    this.userId = userId;
+  public LoanRequest(Long bookId) {
     this.bookId = bookId;
-  }
-
-  public LoanRequest userId(Long userId) {
-    this.userId = userId;
-    return this;
-  }
-
-  /**
-   * Get userId
-   * minimum: 1
-   * @return userId
-   */
-  @NotNull @Min(1L) 
-  @Schema(name = "userId", example = "1", requiredMode = Schema.RequiredMode.REQUIRED)
-  @JsonProperty("userId")
-  public Long getUserId() {
-    return userId;
-  }
-
-  public void setUserId(Long userId) {
-    this.userId = userId;
   }
 
   public LoanRequest bookId(Long bookId) {
@@ -82,20 +58,18 @@ public class LoanRequest {
       return false;
     }
     LoanRequest loanRequest = (LoanRequest) o;
-    return Objects.equals(this.userId, loanRequest.userId) &&
-        Objects.equals(this.bookId, loanRequest.bookId);
+    return Objects.equals(this.bookId, loanRequest.bookId);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(userId, bookId);
+    return Objects.hash(bookId);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class LoanRequest {\n");
-    sb.append("    userId: ").append(toIndentedString(userId)).append("\n");
     sb.append("    bookId: ").append(toIndentedString(bookId)).append("\n");
     sb.append("}");
     return sb.toString();

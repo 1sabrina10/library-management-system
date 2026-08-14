@@ -8,3 +8,12 @@ springdoc:
     path: /v3/api-docs
   swagger-ui:
     path: /swagger-ui.html
+
+  spring:
+    profiles:
+      active: dev
+
+    batch:
+      job:
+        enabled: false
+

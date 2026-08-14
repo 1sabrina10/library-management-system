@@ -106,17 +106,4 @@ public class Book {
         this.loans = loans;
     }
 
-    @Override
-    public String toString() {
-        return "Book{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", isbn='" + isbn + '\'' +
-                ", publicationYear=" + publicationYear +
-                ", available=" + available +
-                ", author=" + author +
-                ", category=" + category +
-                ", loans=" + loans +
-                '}';
-    }
 }

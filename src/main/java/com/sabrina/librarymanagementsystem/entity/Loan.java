@@ -9,7 +9,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "loans")
@@ -19,9 +19,11 @@ public class Loan {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private LocalDate borrowDate;
+    private LocalDateTime borrowDate;
 
-    private LocalDate returnDate;
+    private LocalDateTime dueDate;
+
+    private LocalDateTime returnDate;
 
     @Enumerated(EnumType.STRING)
     private LoanStatus loanStatus;
@@ -34,6 +36,7 @@ public class Loan {
     @JoinColumn(name = "book_id")
     private Book book;
 
+    private boolean reminderSent = false;
     public Loan() {
     }
 
@@ -45,19 +48,27 @@ public class Loan {
         this.id = id;
     }
 
-    public LocalDate getBorrowDate() {
+    public LocalDateTime getBorrowDate() {
         return borrowDate;
     }
 
-    public void setBorrowDate(LocalDate borrowDate) {
+    public void setBorrowDate(LocalDateTime borrowDate) {
         this.borrowDate = borrowDate;
     }
 
-    public LocalDate getReturnDate() {
+    public LocalDateTime getDueDate() {
+        return dueDate;
+    }
+
+    public void setDueDate(LocalDateTime dueDate) {
+        this.dueDate = dueDate;
+    }
+
+    public LocalDateTime getReturnDate() {
         return returnDate;
     }
 
-    public void setReturnDate(LocalDate returnDate) {
+    public void setReturnDate(LocalDateTime returnDate) {
         this.returnDate = returnDate;
     }
 
@@ -85,15 +96,12 @@ public class Loan {
         this.book = book;
     }
 
-    @Override
-    public String toString() {
-        return "Loan{" +
-                "id=" + id +
-                ", borrowDate=" + borrowDate +
-                ", returnDate=" + returnDate +
-                ", loanStatus=" + loanStatus +
-                ", user=" + user +
-                ", book=" + book +
-                '}';
+    public boolean isReminderSent() {
+        return reminderSent;
     }
+
+    public void setReminderSent(boolean reminderSent) {
+        this.reminderSent = reminderSent;
+    }
+
 }

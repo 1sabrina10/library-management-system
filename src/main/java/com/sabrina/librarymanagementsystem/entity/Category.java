@@ -60,13 +60,4 @@ public class Category {
         this.books = books;
     }
 
-    @Override
-    public String toString() {
-        return "Category{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", books=" + books +
-                '}';
-    }
 }
